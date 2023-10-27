@@ -20,6 +20,11 @@ const userSchema = new Schema({
     street: String,
     alley: String,
   },
+  courses: [String],
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
 });
 
 const User = models.User || model("User", userSchema);

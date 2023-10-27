@@ -34,6 +34,7 @@ export default async function handler(req, res) {
         email: "Sheri.sadeghi@gamil.com",
         phone: "09141840000",
         adress: { city: "Bukan", street: "Kurdistan" },
+        courses: ["react", "next"],
       });
       res
         .status(201)
