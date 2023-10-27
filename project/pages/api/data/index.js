@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     // await user.save();
 
     try {
-      const user = await User.create({ name });
+      const user = await User.create({ name:"Sheri",age:32,email:"Sheri.sadeghi@gamil.com" });
       res
         .status(201)
         .json({ status: "sucess", message: "Data Created", data: user });
