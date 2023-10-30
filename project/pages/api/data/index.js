@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     res
       .status(500)
       .json({ status: "failed", message: "Error in connecting to database" });
+    return;
   }
   if (req.method === "POST") {
     const { name } = req.body;
@@ -17,15 +18,6 @@ export default async function handler(req, res) {
       res.status(422).json({ status: "failed", message: "Invalid Data" });
       return;
     }
-
-    //connect to DB
-    // mongoose.connect(
-    //   "mongodb+srv://jamal:j11067@cluster0.lnfefkh.mongodb.net/?retryWrites=true&w=majority",
-    //   () => console.log("Connect to DB")
-    // );
-
-    // const user = new User({name});
-    // await user.save();
 
     try {
       const user = await User.create({
@@ -43,7 +35,19 @@ export default async function handler(req, res) {
       console.log(err);
       res
         .status(500)
-        .json({ status: "failed", message: "Error in connecting to database" });
+        .json({ status: "failed", message: "Error in storing in database" });
+    }
+  } else if (req.method === "GET") {
+    try {
+      const users = await User.find();
+      res.statue(200).json({ status: "success", data: users });
+    } catch (err) {
+      res
+        .status(500)
+        .json({
+          status: "failed",
+          message: "Error in retriving data in database",
+        });
     }
   }
 }
