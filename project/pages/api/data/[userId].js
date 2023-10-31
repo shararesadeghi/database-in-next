@@ -25,5 +25,21 @@ export default async function handler(req, res) {
         message: "Erro in retriving data in database",
       });
     }
+  } else if (req.method === "PATCH") {
+    try {
+      const userData = await User.findById(id);
+      userData.email = req.body.email;
+      await userData.save();
+      res.status(200).json({
+        status: "sucess",
+        data: userData,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        status: "failed",
+        message: "Error in updating data in database",
+      });
+    }
   }
 }
