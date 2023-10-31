@@ -6,10 +6,14 @@ export default function Home() {
   const [edit, setEdit] = useState("");
   const [email, setEmail] = useState("");
 
-  useEffect(() => {
+  const updateData = ()=>{
     fetch("/api/data")
       .then((res) => res.json())
       .then((data) => setUsers(data.data));
+  }
+
+  useEffect(() => {
+    updateData();
   }, []);
 
   const postHandler = async () => {
@@ -33,16 +37,25 @@ export default function Home() {
     setEmail(user.email);
   };
 
-  const saveHandler = async(id)=>{
-    const res = await fetch(`api/data/${id}`,{
-      method:"PATCH",
-      body:JSON.stringify({email}),
-      headers:{"Content-Type":"application/json"},
-    })
+  const saveHandler = async (id) => {
+    const res = await fetch(`api/data/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ email }),
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await res.json();
     setEdit("");
     console.log(data);
-  }
+  };
+
+  const deleteHandler = async (id) => {
+    const res = await fetch(`api/data/${id}`, {
+      method: "DETELE",
+    });
+    const data = await res.json();
+    updateData();
+    console.log(data);
+  };
   return (
     <div>
       <h1>Connecting DataBase to Next.js Project!</h1>
@@ -63,15 +76,17 @@ export default function Home() {
                 <button onClick={() => detailsHandler(user._id)}>
                   Log details
                 </button>
+                <button onClick={() => deleteHandler(user._id)}>Delete</button>
                 <button onClick={() => editHandler(user)}>Edit</button>
-                {
-                  edit && edit===user._id ? (
-                    <div>
-                      <input value={emial} onChange={e=>setEmial(e.traget.value)} />
-                      <button onClick={()=>SaveHandler(user._id)}>Save</button>
-                    </div>
-                  ):null
-                }
+                {edit && edit === user._id ? (
+                  <div>
+                    <input
+                      value={emial}
+                      onChange={(e) => setEmial(e.traget.value)}
+                    />
+                    <button onClick={() => SaveHandler(user._id)}>Save</button>
+                  </div>
+                ) : null}
               </div>
             </li>
           ))}

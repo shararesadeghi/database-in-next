@@ -41,5 +41,20 @@ export default async function handler(req, res) {
         message: "Error in updating data in database",
       });
     }
+  }else if(req.method === "DELETE"){
+      try{
+          await User.findOneAndDelete({_id:id});
+          res.staus(200).json({
+              status:"sucess",
+              message:"Data deleted"
+          })
+
+      }catch(err){
+        console.log(err);
+        res.status(500).json({
+          status: "failed",
+          message: "Error in deleteing data from database",
+        });
+      }
   }
 }
