@@ -17,7 +17,13 @@ export default function Home() {
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    console.log(data);
+    console.log(data.data);
+  };
+
+  const detailsHandler = (id) => {
+    fetch(`/api/data/${id}`)
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
   return (
     <div>
@@ -33,7 +39,14 @@ export default function Home() {
       <div>
         <ul>
           {users.map((user) => (
-            <li key={user._id}>{user.name}</li>
+            <li key={user._id}>
+              <div>
+                <h3>{user.name}</h3>
+                <button onClick={() => detailsHandler(user._id)}>
+                  Log details
+                </button>
+              </div>
+            </li>
           ))}
         </ul>
       </div>
